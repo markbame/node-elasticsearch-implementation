@@ -44,10 +44,10 @@ var Book = mongoose.model("Book", bookSchema);
 Book.createMapping(function(err, mapping){
   if(err){
     console.log('error creating mapping');
-    //console.log(err);
+    console.log(err);
   }else{
     console.log('mapping created!');
-    //console.log(mapping);
+    console.log(mapping);
   }
 });
 
@@ -69,26 +69,12 @@ app.post('/save', function(req, res) {
 })
 
 app.get('/list', function (req, res) {
-
-    // Book.find({}, function(err, docs) {
-    //     if (!err){
-    //         res.send(docs)
-    //         process.exit();
-    //     } else {throw err;}
-    // });
-
-    Book.search(
-      {
-        query_string: {
-          query: "markc"
-        }
-      }, function(err,results) {
-        console.log("results",results)
-        console.log("hits",results.hits)
-        res.send(results.hits)
-        console.log("error",err)
-      }
-    );
+    Book.find({}, function(err, docs) {
+        if (!err){
+            res.send(docs)
+            process.exit();
+        } else {throw err;}
+    });
 })
 
 app.post('/search-result', function (req, res) {
@@ -117,9 +103,7 @@ app.get('/search', function (req, res) {
   res.send(searchform)
 })
 
-
 app.get('/', function (req, res) {
-
   const form = "<head><title>test</title></head><body>"
             +'<form method="post" action="/save">'
             +'  <input type="text" placeholder="title" name="title"><br/>'
