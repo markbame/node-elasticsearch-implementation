@@ -91,6 +91,33 @@ app.get('/list', function (req, res) {
     );
 })
 
+app.post('/search-result', function (req, res) {
+    Book.search(
+      {
+        query_string: {
+          query: req.body.keyword
+        }
+      }, function(err,results) {
+        console.log("results",results)
+        console.log("hits",results.hits)
+        res.send(results.hits)
+        console.log("error",err)
+      }
+    );
+})
+
+app.get('/search', function (req, res) {
+  const searchform = "<head><title>test</title></head><body>"
+            +'<form method="post" action="/search-result">'
+            +' <input type="text" placeholder="search" name="keyword"><br/>'
+            +'  <input type="submit" value="search">'
+            +'</form>'
+            +'<a href="/">add item</a>'
+            +"</body></html>"
+  res.send(searchform)
+})
+
+
 app.get('/', function (req, res) {
 
   const form = "<head><title>test</title></head><body>"
@@ -101,6 +128,7 @@ app.get('/', function (req, res) {
             +'  <input type="text" placeholder="content" name="content"><br/>'
             +'  <input type="submit" value="submit">'
             +'</form>'
+            +'<a href="/search">search</a>'
             +"</body></html>"
   res.send(form)
 })
